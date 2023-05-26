@@ -2,13 +2,6 @@
 
 L-Systems in Rust
 
-## Compile application
-
-### Arch
-```bash
-sudo pacman -S gtk4
-```
-
 ## Compile documents
 Install `tectonic`
 ```bash
