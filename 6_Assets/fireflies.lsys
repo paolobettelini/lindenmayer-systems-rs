@@ -1,0 +1,31 @@
+axiom [Y]a
+iter 5
+initial_pos 375,750
+initial_rot 0
+initial_thickness 2
+background #172333
+initial_color #006400ff
+canvas 750,750
+seed Default Seed
+inject 
+
+LINE = 12
+ANGLE = 0.448798
+WIND_STRENGTH = 0.075
+WIND_SPEED = 0.003
+
+F: forward LINE 
++: rotate ANGLE + sin(WIND_SPEED*TIME*INDEX/LENGTH)*WIND_STRENGTH
+-: rotate -ANGLE
+[: push
+]: pop
+r: rotate pi*0.2*sin(INDEX) + 0.02*cos(FRAME*INDEX*0.000001)
+j: jump 100+300*(1+sin(INDEX*51))+ 10*sin(TIME*INDEX*0.000001)
+c: color yellow
+d: dot 7*sin((100000 + TIME)*INDEX*0.000001)
+
+X -> X[-FFF][+FFF]FX
+Y  -> YFX[+Y][-Y]
+a -> bbbbbbbbbbbbbbbbb
+b ->  [rjcd]
+

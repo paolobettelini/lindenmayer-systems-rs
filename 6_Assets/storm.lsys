@@ -1,0 +1,45 @@
+axiom [a]X
+iter 10
+initial_pos 425,760
+initial_rot 0.2
+initial_thickness 1
+background #777
+initial_color #000000ff
+canvas 750,750
+seed Default Seed
+inject 
+
+LINE = 6
+ANGLE = 0.7854
+LINE_INC = 1.36
+THICKNESS = 10
+WIND_STRENGTH = 0.01
+TURBULENCE = 0.2
+
+F: forward LINE
++: rotate ANGLE - sin(FRAME*INDEX/LENGTH)/50
+-: rotate -ANGLE
+[: push
+]: pop
+>: LINE = LINE * LINE_INC
+<: LINE = LINE / LINE_INC
+s: thickness THICKNESS
+c: THICKNESS = THICKNESS * 0.75
+z: rotate abs(sin(TURBULENCE*FRAME*INDEX/LENGTH)*WIND_STRENGTH)
+P: jump -400
+V: rotate -pi*0.4
+C: color blue
+f: jump sin(INDEX)*500
+J: jump 50
+d: forward max(0, signum(sin((1000000+TIME)*INDEX*INDEX*0.000000002)))*10
+T: thickness 2
+
+F -> >Fz<
+a -> scF[+x]Fb
+b -> scF[-y]Fa
+x -> a
+y -> b
+X -> TC[B]J[B]J[B]J[B]J[B]J[B]J[B]J[B]J[B]J[B]J[B]J[B]J[B]J[B]J[B]J[B]J[B]
+B -> VPJDJDJDJDJDJDJDJDJDJDJDJDJDJDJ
+D -> f[d]
+
