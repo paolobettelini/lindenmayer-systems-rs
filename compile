@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ "$1" = "--help" ] || [ "$1" = "-h" ] || [ -z "$1" ]; then
+    echo "Usage ${0} <Folder>"
+    exit 0
+fi
+
+WORKING_DIR=`pwd`
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+FILENAME=$1
+
+cd $SCRIPT_DIR/$FILENAME/resources
+
+tectonic *.tex
+mv *.pdf ..
+
+cd $WORKING_DIR
