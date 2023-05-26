@@ -1,0 +1,16 @@
+[package]
+name = "lindenmayer-gui"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+gtk = { package = "gtk4", version = "0.6.0", features = ["v4_10"] }
+cairo-rs = "0.17.0"
+log = "0.4.17"
+env_logger = "0.10.0"
+
+lindenmayer-renderer = { path = "../lindenmayer-renderer" }
+lindenmayer-renderer-cairo = { path = "../lindenmayer-renderer-cairo" }
+lindenmayer-parser = { path = "../lindenmayer-parser" }
