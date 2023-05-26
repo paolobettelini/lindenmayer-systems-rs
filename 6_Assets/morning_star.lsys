@@ -1,0 +1,34 @@
+axiom XY
+iter 4
+initial_pos 375,375
+initial_rot 0
+initial_thickness 1
+background lightgreen
+initial_color gray
+canvas 750,750
+seed Default Seed
+inject 
+
+SPEED = 0.00000000002
+
++: rotate pi/2 + sin(TIME*SPEED*INDEX)
+-: rotate -pi/2 
+F: forward 0.6
+[: push
+]: pop
+a: color brown
+J: dot 20
+b: jump 20
+c: rotate 0.5
+d: forward 20
+e: rotate 2.6
+f: forward 20
+|: rotate pi/2
+g: rotate -2.6
+h: color red
+
+F -> F-B+FF-F-FF-FB-FF+B-FF+F+FF+FB+FFF
+B -> BBBBBB
+X -> F-F-F-F
+Y -> aJhbcdef|bcdgf|cdgf|cdgf|cdgf|cdgf|cdgf|cdgf|cdgf|cdgf|cdgf|c
+
