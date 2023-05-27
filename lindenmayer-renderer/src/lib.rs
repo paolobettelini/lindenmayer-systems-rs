@@ -36,7 +36,7 @@ pub struct LSystemRenderer {
     pub seed: String,
     pub injections: Vec<(u32, String)>,
     pub variables: HashMap<String, f64>,
-    pub operations: HashMap<char, Operation>,
+    pub operations: HashMap<char, Vec<Operation>>,
     // Cache for re-use
     pub expression: String,
     pub rng: Rc<RefCell<Pcg64>>,
@@ -95,7 +95,7 @@ impl LSystemRenderer {
         seed: String,
         injections: Vec<(u32, String)>,
         variables: HashMap<String, f64>,
-        operations: HashMap<char, Operation>,
+        operations: HashMap<char, Vec<Operation>>,
     ) -> Self {
         let expression = lsystem.expand(iter);
         let rng = expressions::get_rng(&seed);

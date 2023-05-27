@@ -97,8 +97,8 @@ impl Updatable<&str> for LSystemRenderer {
         }
 
         if line.contains(OP_DECLARATION) {
-            let (character, operation) = parse_char_operation(line)?;
-            self.operations.insert(character, operation);
+            let (character, operations) = parse_char_operation(line)?;
+            self.operations.insert(character, operations);
             return Ok(LineType::Operation);
         }
 
@@ -214,10 +214,10 @@ fn parse_injections(line: &str) -> Result<Vec<(u32, String)>> {
     Ok(result)
 }
 
-fn parse_char_operation(line: &str) -> Result<(char, Operation)> {
+fn parse_char_operation(line: &str) -> Result<(char, Vec<Operation>)> {
     let character = line.chars().next().ok_or(ParsingError::InvalidFormat)?;
     let op = line.split_at(2).1.trim().to_string();
-    let op = parse_operation(&op)?;
+    let op = parse_operations(&op)?;
     Ok((character, op))
 }
 
@@ -276,6 +276,17 @@ fn parse_canvas(line: &str) -> Result<(i32, i32)> {
     }
 
     Ok(size)
+}
+
+fn parse_operations(operations: &str) -> Result<Vec<Operation>> {
+    let mut result = vec![];
+
+    let operations = operations.split(';');
+    for operation in operations {
+        result.push(parse_operation(operation)?);
+    }
+
+    Ok(result)
 }
 
 fn parse_operation(operation: &str) -> Result<Operation> {

@@ -83,86 +83,88 @@ impl dyn Canvas {
                 continue;
             }
 
-            // Update index variable
+            // Update variables
             variables.var("INDEX", index as f64);
 
-            let op = fractal.operations.get(&c);
+            let operations = fractal.operations.get(&c);
 
-            if let Some(op) = op {
-                match op {
-                    Operation::Forward(expr) => {
-                        let length = expr.eval_with_context(&variables)?;
-                        let start_pos = pos;
-                        pos = (pos.0 - length * rot.sin(), pos.1 - length * rot.cos());
-
-                        self.set_line_width(thickness);
-                        self.set_color(color.0, color.1, color.2, color.3);
-                        self.move_to(start_pos.0, start_pos.1);
-                        self.line_to(pos.0, pos.1);
-                        self.stroke();
-                    }
-                    Operation::Jump(expr) => {
-                        let length = expr.eval_with_context(&variables)?;
-                        pos = (pos.0 - length * rot.sin(), pos.1 - length * rot.cos());
-                    }
-                    Operation::Dot(expr) => {
-                        let radius = expr.eval_with_context(&variables)?;
-
-                        self.set_color(color.0, color.1, color.2, color.3);
-                        self.arc(pos.0, pos.1, radius);
-                        self.fill();
-                    }
-                    Operation::Rotate(expr) => {
-                        rot += expr.eval_with_context(&variables)?;
-                    }
-                    Operation::Thickness(expr) => {
-                        thickness = expr.eval_with_context(&variables)?;
-                    }
-                    Operation::Ignore(expr) => {
-                        let v = expr.eval_with_context(&variables)?;
-                        ignore_counter = v as u32;
-                    }
-                    Operation::PushStack => {
-                        for (key, value) in &mut stack1 {
-                            if let Some(v) = variables.get_var(key) {
-                                value.push(v);
-                            }
+            if let Some(operations) = operations {
+                for op in operations {
+                    match op {
+                        Operation::Forward(expr) => {
+                            let length = expr.eval_with_context(&variables)?;
+                            let start_pos = pos;
+                            pos = (pos.0 - length * rot.sin(), pos.1 - length * rot.cos());
+    
+                            self.set_line_width(thickness);
+                            self.set_color(color.0, color.1, color.2, color.3);
+                            self.move_to(start_pos.0, start_pos.1);
+                            self.line_to(pos.0, pos.1);
+                            self.stroke();
                         }
-                        stack2.push((pos, rot, thickness, color));
-
-                        // Update depth value
-                        depth += 1;
-                        variables.var("DEPTH", depth as f64);
-
-                        self.save();
-                    }
-                    Operation::PopStack => {
-                        if let Some((old_pos, old_rot, old_thickness, old_color)) = stack2.pop() {
-                            // restore variables
-                            pos = old_pos;
-                            rot = old_rot;
-                            thickness = old_thickness;
-                            color = old_color;
+                        Operation::Jump(expr) => {
+                            let length = expr.eval_with_context(&variables)?;
+                            pos = (pos.0 - length * rot.sin(), pos.1 - length * rot.cos());
+                        }
+                        Operation::Dot(expr) => {
+                            let radius = expr.eval_with_context(&variables)?;
+    
+                            self.set_color(color.0, color.1, color.2, color.3);
+                            self.arc(pos.0, pos.1, radius);
+                            self.fill();
+                        }
+                        Operation::Rotate(expr) => {
+                            rot += expr.eval_with_context(&variables)?;
+                        }
+                        Operation::Thickness(expr) => {
+                            thickness = expr.eval_with_context(&variables)?;
+                        }
+                        Operation::Ignore(expr) => {
+                            let v = expr.eval_with_context(&variables)?;
+                            ignore_counter = v as u32;
+                        }
+                        Operation::PushStack => {
                             for (key, value) in &mut stack1 {
-                                if let Some(v) = value.pop() {
-                                    variables.var(key, v);
+                                if let Some(v) = variables.get_var(key) {
+                                    value.push(v);
                                 }
                             }
-
-                            // Update depth variable
-                            depth -= 1;
+                            stack2.push((pos, rot, thickness, color));
+    
+                            // Update depth value
+                            depth += 1;
                             variables.var("DEPTH", depth as f64);
-
-                            self.restore();
+    
+                            self.save();
                         }
-                    }
-                    Operation::SetColor(color_value) => {
-                        color = *color_value;
-                    }
-
-                    Operation::SetVar(name, expr) => {
-                        let v = expr.eval_with_context(&variables)?;
-                        variables.var(name, v);
+                        Operation::PopStack => {
+                            if let Some((old_pos, old_rot, old_thickness, old_color)) = stack2.pop() {
+                                // restore variables
+                                pos = old_pos;
+                                rot = old_rot;
+                                thickness = old_thickness;
+                                color = old_color;
+                                for (key, value) in &mut stack1 {
+                                    if let Some(v) = value.pop() {
+                                        variables.var(key, v);
+                                    }
+                                }
+    
+                                // Update depth variable
+                                depth -= 1;
+                                variables.var("DEPTH", depth as f64);
+    
+                                self.restore();
+                            }
+                        }
+                        Operation::SetColor(color_value) => {
+                            color = *color_value;
+                        }
+    
+                        Operation::SetVar(name, expr) => {
+                            let v = expr.eval_with_context(&variables)?;
+                            variables.var(name, v);
+                        }
                     }
                 }
             }
