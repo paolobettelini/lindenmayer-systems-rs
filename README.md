@@ -6,9 +6,9 @@ L-Systems in Rust
 Install `tectonic`
 ```bash
 chmod +x compile
-./compile 2_Abstract
-./compile 3_Documentation
-./compile 4_Diaries
+./compile abstract
+./compile documentation
+./compile diaries
 ```
 This will generate `diaries.pdf`, `abstract.pdf`
-and `documentation.pdf` in their respective folders.
+and `documentation.pdf` in `mandate`.

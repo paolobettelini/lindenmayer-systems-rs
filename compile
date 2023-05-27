@@ -9,9 +9,9 @@ WORKING_DIR=`pwd`
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 FILENAME=$1
 
-cd $SCRIPT_DIR/$FILENAME/resources
+cd $SCRIPT_DIR/mandate/resources/$FILENAME
 
 tectonic *.tex
-mv *.pdf ..
+mv *.pdf ../..
 
 cd $WORKING_DIR
