@@ -1,0 +1,25 @@
+axiom F
+iter 4
+initial_pos 400,820
+initial_rot 0
+initial_thickness 1
+background rgb(156, 198, 236)
+initial_color #006400ff
+canvas 750,800
+seed Windy Algae
+inject 5999,! 7500,!
+
+LINE = 10
+ANGLE = 0.36
+WIND_STRENGTH = 0.04
+SPEED = 0.005
+
+F: color rgb(abs(200*cos(INDEX*TIME*0.000001)),100+75*sin(INDEX*TIME*0.0000005),abs(100*sin(INDEX*TIME*0.000001))); forward LINE; dot 2*sin(INDEX*INDEX)
++: rotate ANGLE + sin(SPEED*TIME*INDEX/LENGTH)*WIND_STRENGTH
+-: rotate -ANGLE
+[: push
+]: pop
+!: ignore 1
+
+F -> FF+[+F-F-F]-[-F+F+F]
+

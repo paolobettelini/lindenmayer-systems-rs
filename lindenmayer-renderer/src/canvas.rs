@@ -59,6 +59,11 @@ impl dyn Canvas {
             expressions::rand(&mut rng, x, y)
         });
 
+        // Add rgb function
+        variables.func3("rgb", move |r, g, b| {
+            expressions::rgb(r, g, b)
+        });
+
         // Add initial values and keys
         for (key, value) in fractal.variables.iter() {
             variables.var(key, *value);
@@ -85,6 +90,7 @@ impl dyn Canvas {
 
             // Update variables
             variables.var("INDEX", index as f64);
+            // TODO optimize
             variables.var("POSX", pos.0 as f64);
             variables.var("POSY", pos.1 as f64);
 
@@ -160,7 +166,7 @@ impl dyn Canvas {
                             }
                         }
                         Operation::SetColor(color_value) => {
-                            color = *color_value;
+                            color = color_value.get_color(&variables)?;
                         }
     
                         Operation::SetVar(name, expr) => {

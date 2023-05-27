@@ -1,5 +1,5 @@
 use crate::*;
-use lindenmayer_renderer::{LSystemRenderer, Operation};
+use lindenmayer_renderer::{LSystemRenderer, Operation, Color};
 use std::str::FromStr;
 
 pub type Result<T> = std::result::Result<T, ParsingError>;
@@ -316,9 +316,20 @@ fn parse_operation(operation: &str) -> Result<Operation> {
             let color = operation
                 .get((part0.len() + 1)..)
                 .ok_or(ParsingError::InvalidFormat)?;
-            let color = csscolorparser::parse(color).map_err(|_| ParsingError::InvalidColor)?;
+            // Check if the color is CSS-valid
+            let csscolor = csscolorparser::parse(color);
 
-            (color.r, color.g, color.b, color.a)
+            if let Ok(color) = csscolor {
+                Color::Static((color.r, color.g, color.b, color.a))
+            } else if color.starts_with("rgb") {
+                // Check if it's an expression starting with "rgb"
+                let expr = color
+                    .parse()
+                    .map_err(|_| ParsingError::InvalidExpression)?;
+                Color::Dynamic(expr)
+            } else {
+                Err(ParsingError::InvalidColor)?
+            }
         })),
         _ => {
             if operation.contains(VAR_DECLARATION) {

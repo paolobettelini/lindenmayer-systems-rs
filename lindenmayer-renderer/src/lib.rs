@@ -1,9 +1,9 @@
+use crate::canvas::ExprContext;
 pub use lindenmayer_engine::*;
 pub use meval;
 pub use rand_pcg::Pcg64;
 use meval::*;
 use std::{rc::Rc, cell::RefCell};
-
 use std::collections::HashMap;
 
 pub mod canvas;
@@ -19,8 +19,32 @@ pub enum Operation {
     Ignore(Expr),
     PushStack,
     PopStack,
-    SetColor((f64, f64, f64, f64)),
+    SetColor(Color),
     SetVar(String, Expr),
+}
+
+#[derive(Debug)]
+pub enum Color {
+    Static((f64, f64, f64, f64)),
+    Dynamic(Expr),
+}
+
+impl Color {
+    pub fn get_color<'a>(&self, variables: &'a ExprContext) -> Result<(f64, f64, f64, f64), meval::Error> {
+        match self {
+            Color::Static(v) => Ok(*v),
+            Color::Dynamic(v) => {
+                let color = v.eval_with_context(&variables)?;
+                let color = color as u64;
+                
+                let r = (color & 0xFF) as f64;
+                let g = ((color >> 8) & 0xFF) as f64;
+                let b = ((color >> 16) & 0xFF) as f64;
+
+                Ok((r / 255.0, g / 255.0, b / 255.0, 1.0))
+            },
+        }
+    }
 }
 
 #[derive(Debug)]
