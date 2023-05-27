@@ -103,7 +103,7 @@ pub fn init_elements() -> UiElements {
 
     // Animation player and info
     let player = Grid::new();
-    player.set_width_request(550);
+    player.set_width_request(750);
     player.set_margin_start(20);
     player.set_row_homogeneous(true);
     player.set_column_homogeneous(true);
