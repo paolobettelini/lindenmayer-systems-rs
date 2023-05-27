@@ -1,0 +1,22 @@
+axiom X
+iter 160
+initial_pos 0,500
+canvas 500,500
+
+STEP = 5
+RADIUS = 2.5
+xRe = 0
+xIm = 0
+oldXRe = 0
+
+J: jump STEP
+r: rotate -pi/2
+[: push
+]: pop
+s: xRe = 0; xIm = 0; oldXRe = 0
+I: oldXRe = xRe; xRe = xRe * xRe - xIm * xIm + (POSX - 350) / 200; xIm = 2 * oldXRe * xIm + (POSY - 250) / 200
+F: dot RADIUS*signum(4 - xRe * xRe - xIm * xIm)
+
+X -> [rY]JX
+Y -> JsIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIFY
+
