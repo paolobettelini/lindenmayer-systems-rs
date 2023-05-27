@@ -36,7 +36,7 @@ impl Updatable<&str> for LSystemRenderer {
     fn update(&mut self, line: &str) -> Result<LineType> {
         let line = line.trim();
 
-        if line.is_empty() {
+        if line.is_empty() || line.starts_with(COMMENT) {
             return Ok(LineType::Nothing);
         }
 
@@ -283,7 +283,7 @@ fn parse_operations(operations: &str) -> Result<Vec<Operation>> {
 
     let operations = operations.split(';');
     for operation in operations {
-        result.push(parse_operation(operation)?);
+        result.push(parse_operation(operation.trim())?);
     }
 
     Ok(result)

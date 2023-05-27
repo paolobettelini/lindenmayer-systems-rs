@@ -21,6 +21,7 @@ pub const BACKGROUND: &str = "background";
 pub const CANVAS: &str = "canvas";
 pub const SEED: &str = "seed";
 pub const INJECT: &str = "inject";
+pub const COMMENT: &str = ";";
 
 // Symbols
 pub const OP_DECLARATION: &str = ":";
