@@ -85,6 +85,8 @@ impl dyn Canvas {
 
             // Update variables
             variables.var("INDEX", index as f64);
+            variables.var("POSX", pos.0 as f64);
+            variables.var("POSY", pos.1 as f64);
 
             let operations = fractal.operations.get(&c);
 
