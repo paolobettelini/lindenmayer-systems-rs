@@ -101,35 +101,39 @@ pub fn init_elements() -> UiElements {
 
     let drawing_area = DrawingArea::new();
 
-    let playback = gtk::Box::builder()
-        .orientation(Horizontal)
-        .spacing(30)
-        .baseline_position(BaselinePosition::Center)
-        .hexpand(true)
-        .build();
+    // Animation player and info
+    let player = Grid::new();
+    player.set_width_request(550);
+    player.set_margin_start(20);
+    player.set_row_homogeneous(true);
+    player.set_column_homogeneous(true);
 
     let toggle_anim_button = Button::builder().label("Play/Stop").build();
     let reset_anim_button = Button::builder().label("Reset").build();
 
     let frame_label = Label::new(Some("Frame: 0"));
+    frame_label.set_halign(Align::Start);
     let time_label = Label::new(Some("Time: 0"));
+    time_label.set_halign(Align::Start);
     let elapsed_label = Label::new(Some("Elapsed: 0 ms"));
+    elapsed_label.set_halign(Align::Start);
     let length_label = Label::new(Some("Length: 0"));
+    length_label.set_halign(Align::Start);
 
     editor_config_scroller.set_child(Some(&editor_config_box));
     editor_vars_scroller.set_child(Some(&editor_vars_box));
     editor_operations_scroller.set_child(Some(&editor_operations_box));
     editor_rules_scroller.set_child(Some(&editor_rules_box));
 
-    playback.append(&toggle_anim_button);
-    playback.append(&reset_anim_button);
-    playback.append(&length_label);
-    playback.append(&frame_label);
-    playback.append(&time_label);
-    playback.append(&elapsed_label);
+    player.attach(&toggle_anim_button, 2, 0, 2, 1);
+    player.attach(&reset_anim_button, 5, 0, 2, 1);
+    player.attach(&length_label, 1, 1, 2, 1);
+    player.attach(&frame_label, 3, 1, 2, 1);
+    player.attach(&time_label, 5, 1, 2, 1);
+    player.attach(&elapsed_label, 7, 1, 2, 1);
 
     left_box.append(&drawing_area);
-    left_box.append(&playback);
+    left_box.append(&player);
 
     right_box.append(&status_label);
     right_box.append(&container_toggle_config);
