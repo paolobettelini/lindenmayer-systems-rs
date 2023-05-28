@@ -47,10 +47,13 @@ impl dyn Canvas {
 
         let mut depth = 0;
 
-        // Update length variable
+        // Set length variable
         variables.var("LENGTH", fractal.expression.len() as f64);
-        // Update depth variable
+        // Set depth variable
         variables.var("DEPTH", 0f64);
+        // Set pos variables
+        variables.var("POSX", pos.0 as f64);
+        variables.var("POSY", pos.1 as f64);
 
         // Add random function to context
         let rng = fractal.rng.clone();
@@ -90,9 +93,6 @@ impl dyn Canvas {
 
             // Update variables
             variables.var("INDEX", index as f64);
-            // TODO optimize
-            variables.var("POSX", pos.0 as f64);
-            variables.var("POSY", pos.1 as f64);
 
             let operations = fractal.operations.get(&c);
 
@@ -109,10 +109,18 @@ impl dyn Canvas {
                             self.move_to(start_pos.0, start_pos.1);
                             self.line_to(pos.0, pos.1);
                             self.stroke();
+
+                            // Update POS variables
+                            variables.var("POSX", pos.0 as f64);
+                            variables.var("POSY", pos.1 as f64);
                         }
                         Operation::Jump(expr) => {
                             let length = expr.eval_with_context(&variables)?;
                             pos = (pos.0 - length * rot.sin(), pos.1 - length * rot.cos());
+
+                            // Update POS variables
+                            variables.var("POSX", pos.0 as f64);
+                            variables.var("POSY", pos.1 as f64);
                         }
                         Operation::Dot(expr) => {
                             let radius = expr.eval_with_context(&variables)?;
