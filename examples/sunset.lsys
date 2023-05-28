@@ -1,0 +1,25 @@
+axiom X
+iter 7
+initial_pos 375,750
+initial_rot -0.1
+initial_thickness 1
+background black
+initial_color black
+canvas 750,750
+seed Default Seed
+inject 
+
+LINE = 2
+ANGLE = 0.523599
+WIND_STRENGTH = 0.02
+SPEED = 0.005
+
+F: color rgb(140+60*sin(POSX*0.009), 61 + 50*cos(INDEX*0.05),140+100*sin(POSX*0.005)); forward LINE
+-: rotate -ANGLE
+[: push
+]: pop
++: rotate ANGLE+ sin(SPEED*TIME*INDEX/LENGTH)*WIND_STRENGTH
+
+X -> F[-FX+]+F[-XX][--X]
+F -> FF
+
