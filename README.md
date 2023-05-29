@@ -1,8 +1,9 @@
 # Lindenmayer Garden
 
-L-Systems in Rust
+L-Systems in Rust using GTK4.
+This project implements a deterministic grammar with advanced semantics, which include stochastic behavior.
 
-## Compile documents
+# Compile documents
 Install `tectonic`
 ```bash
 chmod +x compile
