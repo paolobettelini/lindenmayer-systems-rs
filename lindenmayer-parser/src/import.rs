@@ -215,6 +215,9 @@ fn parse_injections(line: &str) -> Result<Vec<(u32, String)>> {
 }
 
 fn parse_char_operation(line: &str) -> Result<(char, Vec<Operation>)> {
+    if line.len() == 1 {
+        return Err(ParsingError::InvalidFormat);
+    }
     let character = line.chars().next().ok_or(ParsingError::InvalidFormat)?;
     let op = line.split_at(2).1.trim().to_string();
     let op = parse_operations(&op)?;
