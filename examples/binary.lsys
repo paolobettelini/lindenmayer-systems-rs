@@ -1,0 +1,26 @@
+axiom FX
+iter 10
+initial_pos 375,700
+initial_rot 0
+initial_thickness 7
+background eeee
+initial_color rgb(100, 100, 255)
+canvas 750,750
+seed Default Seed
+inject 
+
+ANGLE = 0.681
+LINE = 250
+COEFF1 = 0.6
+COEFF2 = 0.7
+THICKNESS = 10
+
+F: forward LINE
++: rotate ANGLE + ANGLE * sin(TIME*0.001)
+-: rotate -ANGLE 
+[: push
+]: pop
+>: LINE = LINE * COEFF1; THICKNESS = THICKNESS * COEFF2; thickness THICKNESS; color rgb(THICKNESS * 25, THICKNESS*25, 128+128*sin(TIME*INDEX*0.000001))
+
+X -> >[-FX]+FX
+
