@@ -1,0 +1,31 @@
+axiom X
+iter 7
+initial_pos 175,357
+initial_rot 0
+initial_thickness 3
+background pink
+initial_color black
+canvas 350,650
+seed Stickman
+inject 
+
+ANGLE=0.1
+
+[: push
+]: pop
+t: forward 150; jump -25
+R: rotate pi/2 + sin(TIME * 0.005) * 0.2; forward 100
+L: rotate -pi/2 + cos(TIME * 0.005) * 0.2; forward 100
+h: jump 25; rotate -pi/2
+c: forward 5; rotate ANGLE
+r: rotate 2.75; forward 100
+l: rotate -2.75; forward 100
+p: rotate pi/2; jump sin(TIME * 0.005) * 25; rotate -pi/2; rotate 0.1 * sin(TIME * 0.01)
+P: color brown; jump -94; rotate pi/2; jump 100; forward -200
+M: color blue;jump -126; rotate pi/2; jump -30; rotate -pi/2
+m: forward 5; rotate ANGLE * 1.85
+
+X -> p[P][Mm][r][l]t[R][L]h[c]
+c -> cc
+m -> mm
+
