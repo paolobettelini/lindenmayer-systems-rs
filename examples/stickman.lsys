@@ -22,10 +22,12 @@ r: rotate 2.75; forward 100
 l: rotate -2.75; forward 100
 p: rotate pi/2; jump sin(TIME * 0.005) * 25; rotate -pi/2; rotate 0.1 * sin(TIME * 0.01)
 P: color brown; jump -94; rotate pi/2; jump 100; forward -200
-M: color blue;jump -126; rotate pi/2; jump -30; rotate -pi/2
+M: color blue;jump -123; rotate pi/2; rotate -pi/2; dot 29
 m: forward 5; rotate ANGLE * 1.85
+f: rotate pi; jump 152.5; rotate pi/2; jump -300; forward 500
+m: rotate pi/2; jump 25; rotate pi/2; jump -10; forward 20
+e: jump 10; rotate -pi/2; jump 40; dot 10; rotate -pi/2; jump 40; dot 10
 
-X -> p[P][Mm][r][l]t[R][L]h[c]
+X -> [f]p[P][M][r][l]t[R][L]h[c]me
 c -> cc
-m -> mm
 
